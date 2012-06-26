@@ -31,12 +31,12 @@ void clearregs(byte* reg)
 //addresses are chip8 normalized
 void printmem(byte* mem,word start, word end)
 {
-	byte* offset = mem - 0x200;
-	byte* mstart = start + offset;
-	byte* mend = end + offset;
+	byte* mstart = mem + start;
+	byte* mend = mem + end;
 	int linecount = 0;
 	byte* i = mstart;
 	while(i<=mend){
+		//printf("Address: %p\n",i);
 		if(linecount > 8){
 			printf("\n");
 			linecount = 0;
@@ -44,7 +44,7 @@ void printmem(byte* mem,word start, word end)
 		else{
 			linecount++;
 		}
-		printf("%X ",*i);
+		printf("%.2X ",*i);
 		i++;
 	}
 	printf("\n");

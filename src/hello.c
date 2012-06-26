@@ -49,6 +49,8 @@ int main()
 	clearregs(reg);
 	printf("Memory after saving\n");
 	printmem(mem,0x200,0x20F);
+	printf("Read memory as a string, line below should read \"Hello World\"\n");
+	printf("%s\n",mem+0x200);
 	printf("Registers should all be 0\n");
 	prntregs(reg);
 	printf("Registers should now hold just the 2nd word\n");

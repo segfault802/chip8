@@ -1,22 +1,35 @@
 #include <stdio.h>
 #include <limits.h>
+#include "decs.h"
 #include "opcodes.h"
+#include "debug.h"
 
 
 
-
-int main()
+int main(int argc, char* argv[])
 {	
-	//allocate memory for registers and program memory
+	//allocate registers and program memory
 	byte  reg[16];
 	byte mem[4096];
-	int offset = mem - 0x200;
-	
-	
-	printf("Hello World!\n");
-	//printf("Char size: %u\n",CHAR_BIT);
-	//printf("Char min: %u\n",CHAR_MIN);
-	//printf("Char max: %u\n",UCHAR_MAX);
-	printf("mem start: %p\n",mem);
-	printf("mem + 1: %p\n",mem+1);
+	printf("Memory start: %p\n",mem);
+	byte *ptr = mem + 0x200;
+	size_t size;
+	FILE *fp;
+	if(argc > 1){
+		fp = fopen(argv[1],"rb");
+		printf("opening %s\n",argv[1]);
+	}
+	else{
+		printf("no file specified!\n");
+		return 1;
+	}
+	while(!feof(fp)){
+		//printf("Pointer Address: %p\n",ptr);
+		size = fread(ptr,1,2,fp);	
+		printf("Read %d bytes, %.2X%.2X\n",size,*ptr,*(ptr+0x1));
+		ptr += 0x02;
+	}
+	fclose(fp);
+	printmem(mem,0x200,0x223);	
+	return 0;
 }

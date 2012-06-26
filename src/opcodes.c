@@ -61,9 +61,7 @@ void subxy(byte* regx, byte* regy, byte* vf)
 //loads registers V0 though VX with bytes starting at I
 void load(byte* reg, byte x,byte* mem, word* I)
 {	
-	
-	byte* offset = mem - 0x200;
-	byte* cpystart =  *I + offset;
+	byte* cpystart =  *I + mem;
 	byte* i = cpystart;
 	byte* cpyend = cpystart + x;
 	while(i<=cpyend){
@@ -77,8 +75,7 @@ void load(byte* reg, byte x,byte* mem, word* I)
 //stores bytes in V0 through VX in memory at I
 void stor(byte* reg, byte x, byte* mem, word* I)
 {
-	byte* offset = mem - 0x200;
-	byte* cpystart =  *I + offset;
+	byte* cpystart =  *I + mem;
 	byte* i = cpystart;
 	byte* cpyend = cpystart + x;
 	while(i<=cpyend){
