@@ -1,5 +1,6 @@
 //implementation of all opcodes in no particular order
 #include "opcodes.h"
+#include <stdio.h>
 #include <stdlib.h> 
 
 //6XNN: set-immediate
@@ -127,52 +128,56 @@ void iset(word* I, word N)
 //CXNN: set VX to a random number anded with NN
 void setrand(byte* reg, byte val)
 {
-	byte* rnum = rand() % 256;
-	*reg = rnum & val;
+	byte rnum = rand() % 256;
+	printf("rand: %X, val: %d, result: %d\n",rnum,val,rnum & val);
+	//printf("before: %d, ",*reg);
+	*reg = (rnum & val);
+	//printf("after: %d\n",*reg);
 }
 
 //1NNN: jump to address NNN
-void jmp(word n,word* pc)
+void jmp(word n,byte* mem,byte** pc)
 {
-	*pc = n;
+	*pc = n+mem;
 }
 
 //3XNN: skip next instruction if VX = NN
-void seq(byte* reg,byte val,word* pc)
+void seq(byte* reg,byte val,byte** pc)
 {
+	printf("reg: %d, val: %d\n",*reg,val);
 	if(*reg == val){
-		*pc++;
+		*pc+=2;
 	}
 }
 
 //4XNN: skip next instruction if VX != NN
-void sne(byte* reg,byte val,word* pc)
+void sne(byte* reg,byte val,byte** pc)
 {
 	if(*reg != val){
-		*pc++;
+		*pc+=2;
 	}
 }
 
 //5XY0: skip next instruction if VX = VY
-void sey(byte* regx,byte* regy,word* pc)
+void sey(byte* regx,byte* regy,byte** pc)
 {
 	if(*regx == *regy){
-		*pc++;
+		*pc+=2;
 	}
 }
 
 //9XY0: skip next instruction if VX != VY
-void sney(byte* regx, byte* regy, word* pc)
+void sney(byte* regx, byte* regy, byte** pc)
 {	
 	if(*regx != *regy){
-		*pc++;
+		*pc+=2;
 	}
 }
 
 //BNNN: jump to NNN + V0
-void jmp0(byte* reg, word n,word* pc)
+void jmp0(byte* reg, word n,byte** pc)
 {
-	*pc = n + *reg;
+	*pc = (byte*)(n + *reg);
 }
 
 //FX1E: add VX to I

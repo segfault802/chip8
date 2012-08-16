@@ -103,22 +103,22 @@ void iset(word* I, word N);
 void setrand(byte* reg, byte val);
 
 //1NNN: jump to address NNN
-void jmp(word n,word* pc);
+void jmp(word n,byte* mem,byte** pc);
 
 //3XNN: skip next instruction if VX = NN
-void seq(byte* reg,byte val,word* pc);
+void seq(byte* reg,byte val,byte** pc);
 
 //4XNN: skip next instruction if VX != NN
-void sne(byte* reg,byte val,word* pc);
+void sne(byte* reg,byte val,byte** pc);
 
 //5XY0: skip next instruction if VX = VY
-void sey(byte* regx,byte* regy,word* pc);
+void sey(byte* regx,byte* regy,byte** pc);
 
 //9XY0: skip next instruction if VX != VY
-void sney(byte* regx, byte* regy, word* pc);
+void sney(byte* regx, byte* regy, byte** pc);
 
 //BNNN: jump to NNN + V0
-void jmp0(byte* reg, word n,word* pc);
+void jmp0(byte* reg, word n,byte** pc);
 
 //FX1E: add VX to I
 void addaddr(byte* reg, word* I);
