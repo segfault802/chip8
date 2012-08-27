@@ -1,0 +1,14 @@
+Write the graphics renderer
+	use ncurses, primitive but good for a couple reasons:
+		Deals with characters instead of pixels, which is fine for this
+		can be used to handle keyboard input also
+
+Implement the remaining opcodes
+	they mostly deal with IO and using the call stack
+
+Write an assembler and/or disassembler
+	could do the assembler in perl to make parsing ez
+	the disassembler could be combined with the item below
+
+Write a program that will print the instructions of a CHIP-8 program in human readable format
+	include an option that will toggle whether it follows conditional branches or does a straight dump
