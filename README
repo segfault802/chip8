@@ -1,3 +1,9 @@
 An emulator for the CHIP-8 architecture.
 
 Technically this isn't a true emulator since CHIP-8 was actually an interpreted programming language and wasn't implemented directly in hardware.  Its purpose was to make programming games easier by providing a common instruction set that would work across multiple platforms.
+
+See the links below for more info and the specification that was followed
+
+https://en.wikipedia.org/wiki/CHIP-8
+
+http://devernay.free.fr/hacks/chip8/C8TECH10.HTM

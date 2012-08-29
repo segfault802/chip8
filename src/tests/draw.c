@@ -45,6 +45,8 @@ int main()
 	drawSprite(56,10,5,F);
 	//drawSprite(28,15,4,smiley);
 	getch();
+	clearScreen();
+	getch();
 	endwin();
 	return 0;
 }

@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <limits.h>
 #include <time.h>
+#include <ncurses.h>
 #include "decs.h"
+#include "io.h"
 #include "opcodes.h"
 #include "debug.h"
 #include "util.h"
@@ -13,6 +15,9 @@ int main(int argc, char* argv[])
 	//set the RNG
 	srand(time(0));
 
+	//initialize ncurses
+	initscr();
+
 	//allocate registers and program memory
 	byte  reg[16];
 	clearregs(reg);
@@ -23,7 +28,6 @@ int main(int argc, char* argv[])
 	word I;
 	byte q1, q2, q3, q4;
 	byte keepAlive = 1;
-	//printf("Memory start: %p\n",mem);
 	byte *ptr = mem + 0x200;
 	size_t size;
 	FILE *fp;
@@ -47,19 +51,25 @@ int main(int argc, char* argv[])
 	printmem(mem,0x200,0x223);
 	
 	//main emulation loop
-	
+	//split apart each instruction and determine the opcode
 	while(keepAlive){
+		printf("BEFORE\n");
+		prntregs(reg);
+		printf("I: %.3X PC: %.3X\n",I,pc-mem);
+		printmem(mem,0x200,0x223);	
 		instr = (*pc << 8) + *(pc + 0x1);
 		q1 = getQuartet(instr,1);
 		q2 = getQuartet(instr,2);
 		q3 = getQuartet(instr,3);
 		q4 = getQuartet(instr,4);
+		printf("##########\n");
 		if(q1 == 0 && q2 == 0 && q3 == 0 && q4 == 0){
 			keepAlive = 0;
 		}
 		else{
 			switch(q1){
-				case 0x0:		
+				case 0x0:
+					clearScreen();		
 					break;
 				case 0x1:
 					//1NNN: jump to address NNN
@@ -167,7 +177,8 @@ int main(int argc, char* argv[])
 					break;
 				case 0xD:
 					//DXYN: draw sprite at VX,VY of height N loaded from I
-					printf("draw sprite of height %X at V%X,V%X*\n",q4,q2,q3);
+					printf("draw sprite at V%X,V%X,H%X\n",q2,q3,q4);
+					drawSprite(*(reg+q2),*(reg+q3),q4,mem+I);
 					break;
 				case 0xE:
 					switch(q3){
@@ -231,12 +242,16 @@ int main(int argc, char* argv[])
 					break;
 				}
 			}
+			printf("AFTER\n");
 			prntregs(reg);
-			//printf("I: %.3X PC: %.3X\n",I,pc-mem);
-			//printmem(mem,0x200,0x223);
+			printf("I: %.3X PC: %.3X\n",I,pc-mem);
+			printmem(mem,0x200,0x223);
+			printf("##########\n");
 			//printf("%X %X %X %X\n",q1,q2,q3,q4);
 		pc += 0x2;
 		}
 	}
+	getch();
+	endwin();
 	return 0;
 }

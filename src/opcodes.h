@@ -12,11 +12,11 @@ Opcode	Explanation
 0NNN	Calls RCA 1802 program at address NNN.
 00E0	Clears the screen.
 00EE	Returns from a subroutine.
-1NNN	Jumps to address NNN.
+*1NNN	Jumps to address NNN.
 2NNN	Calls subroutine at NNN.
-3XNN	Skips the next instruction if VX equals NN.
-4XNN	Skips the next instruction if VX doesn't equal NN.
-5XY0	Skips the next instruction if VX equals VY.
+*3XNN	Skips the next instruction if VX equals NN.
+*4XNN	Skips the next instruction if VX doesn't equal NN.
+*5XY0	Skips the next instruction if VX equals VY.
 *6XNN	Sets VX to NN.
 *7XNN	Adds NN to VX.
 *8XY0	Sets VX to the value of VY.
@@ -28,12 +28,12 @@ Opcode	Explanation
 *8XY6	Shifts VX right by one. VF is set to the value of the least significant bit of VX before the shift.[2]
 *8XY7	Sets VX to VY minus VX. VF is set to 0 when there's a borrow, and 1 when there isn't.
 *8XYE	Shifts VX left by one. VF is set to the value of the most significant bit of VX before the shift.[2]
-9XY0	Skips the next instruction if VX doesn't equal VY.
+*9XY0	Skips the next instruction if VX doesn't equal VY.
 *ANNN	Sets I to the address NNN.
-BNNN	Jumps to the address NNN plus V0.
-CXNN	Sets VX to a random number and NN.
+*BNNN	Jumps to the address NNN plus V0.
+*CXNN	Sets VX to a random number and NN.
 
-DXYN	Draws a sprite at coordinate (VX, VY) that has a width of 8 pixels and a height of N pixels. 
+*DXYN	Draws a sprite at coordinate (VX, VY) that has a width of 8 pixels and a height of N pixels. 
 		Each row of 8 pixels is read as bit-coded (with the most significant bit of each byte 
 		displayed on the left) starting from memory location I; I value doesn't change after the 
 		execution of this instruction. As described above, VF is set to 1 if any screen pixels are 
@@ -44,7 +44,7 @@ FX07	Sets VX to the value of the delay timer.
 FX0A	A key press is awaited, and then stored in VX.
 FX15	Sets the delay timer to VX.
 FX18	Sets the sound timer to VX.
-FX1E	Adds VX to I.[3]
+*FX1E	Adds VX to I.[3]
 FX29	Sets I to the location of the sprite for the character in VX. Characters 0-F (in hexadecimal) 
 		are represented by a 4x5 font.
 FX33	Stores the Binary-coded decimal representation of VX, with the most significant of three 

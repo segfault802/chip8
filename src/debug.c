@@ -8,13 +8,13 @@ void prntregs(byte* reg)
 {
 	int i, linecount = 0;
 	for(i=0;i<16;i++){
-		if(linecount > 8){
+		/*if(linecount > 8){
 			printf("\n");
 			linecount = 0;
 		}
 		else{
 			linecount++;
-		}
+		}*/
 		printf("V%X:%X ",i,reg[i]);
 	}
 	printf("\n");
@@ -35,10 +35,11 @@ void printmem(byte* mem,word start, word end)
 	byte* mend = mem + end;
 	int linecount = 0;
 	byte* i = mstart;
+	printf("%X: ",(i-mem));
 	while(i<=mend){
 		//printf("Address: %p\n",i);
-		if(linecount > 8){
-			printf("\n");
+		if(linecount > 16){
+			printf("\n%X: ",(i-mem));
 			linecount = 0;
 		}
 		else{
