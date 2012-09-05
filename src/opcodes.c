@@ -129,7 +129,7 @@ void iset(word* I, word N)
 void setrand(byte* reg, byte val)
 {
 	byte rnum = rand() % 256;
-	printf("rand: %X, val: %d, result: %d\n",rnum,val,rnum & val);
+	//printf("rand: %X, val: %d, result: %d\n",rnum,val,rnum & val);
 	//printf("before: %d, ",*reg);
 	*reg = (rnum & val);
 	//printf("after: %d\n",*reg);
@@ -138,13 +138,13 @@ void setrand(byte* reg, byte val)
 //1NNN: jump to address NNN
 void jmp(word n,byte* mem,byte** pc)
 {
-	*pc = n+mem;
+	*pc = (n+mem)-0x2;
 }
 
 //3XNN: skip next instruction if VX = NN
 void seq(byte* reg,byte val,byte** pc)
 {
-	printf("reg: %d, val: %d\n",*reg,val);
+	//printf("reg: %d, val: %d\n",*reg,val);
 	if(*reg == val){
 		*pc+=2;
 	}

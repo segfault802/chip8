@@ -8,7 +8,7 @@ void printRow(byte row)
 	byte b;
 	for(i=0;i<8;i++){
 		b = (row>>(8-(i+1))) & 1;
-		printf("%d",b);
+		//printf("%d",b);
 		if(b == 0)
 			addch(' ');
 		else
@@ -19,14 +19,17 @@ void printRow(byte row)
 void drawSprite(byte x, byte y, byte n, byte* s)
 {
 	byte i;
-	printf("#########\n");
-	printf("drawing sprite at %d,%d\n",x,y);
+	//FILE *fp = fopen("./bin/tmp","a");
+	//fprintf(fp,"drawing at %d,%d\n",x,y);
 	move(y,x);
 	for(i=0;i<n;i++){
 		move(y+i,x);
-		printf("row %d: %X\n",i,s[i]);
+		//fprintf(fp,"row %d: %X\n",i,s[i]);
 		printRow(s[i]);
 	}
+	//fprintf(fp,"@@@@@@@@@\n");
+	//fclose(fp);
+	refresh();
 }
 
 void clearScreen()

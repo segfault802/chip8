@@ -4,20 +4,20 @@
 #include "debug.h"
 
 //print the contents of all registers
-void prntregs(byte* reg)
+void printregs(FILE *fp,byte* reg)
 {
 	int i, linecount = 0;
 	for(i=0;i<16;i++){
 		/*if(linecount > 8){
-			printf("\n");
+			fprintf(fp,"\n");
 			linecount = 0;
 		}
 		else{
 			linecount++;
 		}*/
-		printf("V%X:%X ",i,reg[i]);
+		fprintf(fp,"V%X:%X ",i,reg[i]);
 	}
-	printf("\n");
+	fprintf(fp,"\n");
 }
 void clearregs(byte* reg)
 {	
@@ -29,24 +29,24 @@ void clearregs(byte* reg)
 
 //print contents of memory from start to end
 //addresses are chip8 normalized
-void printmem(byte* mem,word start, word end)
+void printmem(FILE* fp,byte* mem,word start, word end)
 {
 	byte* mstart = mem + start;
 	byte* mend = mem + end;
 	int linecount = 0;
 	byte* i = mstart;
-	printf("%X: ",(i-mem));
+	fprintf(fp,"%X: ",(i-mem));
 	while(i<=mend){
-		//printf("Address: %p\n",i);
+		//fprintf(fp,"Address: %p\n",i);
 		if(linecount > 16){
-			printf("\n%X: ",(i-mem));
+			fprintf(fp,"\n%X: ",(i-mem));
 			linecount = 0;
 		}
 		else{
 			linecount++;
 		}
-		printf("%.2X ",*i);
+		fprintf(fp,"%.2X ",*i);
 		i++;
 	}
-	printf("\n");
+	fprintf(fp,"\n");
 }

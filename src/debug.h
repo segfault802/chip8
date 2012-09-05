@@ -3,9 +3,9 @@
 #include "decs.h"
 
 //print the contents of all registers
-void prntregs(byte* reg);
+void printregs(FILE* fp,byte* reg);
 
 //print contents of memory from start to end
 //addresses are chip8 normalized
-void printmem(byte* mem,word start, word end);
+void printmem(FILE* fp,byte* mem,word start, word end);
 
