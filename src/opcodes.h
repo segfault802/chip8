@@ -10,7 +10,7 @@ X and Y: 4-bit register identifier
 
 Opcode	Explanation
 0NNN	Calls RCA 1802 program at address NNN.
-00E0	Clears the screen.
+*00E0	Clears the screen.
 00EE	Returns from a subroutine.
 *1NNN	Jumps to address NNN.
 2NNN	Calls subroutine at NNN.
@@ -122,3 +122,12 @@ void jmp0(byte* reg, word n,byte** pc);
 
 //FX1E: add VX to I
 void addaddr(byte* reg, word* I);
+
+
+/*******************************************/
+//00EE	Returns from a subroutine.
+void ret(byte*** sp, byte** pc);
+
+//2NNN: Call subroutine at NNN
+void call(word n,byte* mem,byte*** sp,byte** pc);
+

@@ -24,8 +24,11 @@ int main(int argc, char* argv[])
 	byte* vf = &reg[15];
 	byte mem[4096];
 	byte* pc = mem+0x200;
-	word instr,longOp;
+	byte* stack[16];
+	byte** sp;	
 	word I;
+	//some other stuff
+	word instr,longOp;
 	byte q1, q2, q3, q4;
 	byte done = 0;
 	byte *ptr = mem + 0x200;
@@ -70,14 +73,23 @@ int main(int argc, char* argv[])
 		else{
 			switch(q1){
 				case 0x0:
-					clearScreen();		
+					switch(q4){
+						case 0x0:
+							clearScreen();
+							break;
+						case 0xE:
+							//00EE: return from a subroutine
+							fprintf(log,"return from sub\n");
+							ret(&sp,&pc);
+							break;
+					}		
 					break;
 				case 0x1:
 					//1NNN: jump to address NNN
 					longOp = (word)((q2<<8)+(q3<<4)+q4);
 					fprintf(log,"jump to %.3X\n",longOp);
 					if(pc == mem+longOp){
-						fprintf(log,"Infinite loop detected! (recursive jump)\nbreaking...\n");
+						fprintf(log,"Entered an infinite loop through a recursive jump! breaking...\n");
 						done = 1;
 					}
 					else{
@@ -85,6 +97,10 @@ int main(int argc, char* argv[])
 					}
 					break;	
 				case 0x2:
+					//2NNN
+					longOp = (word)((q2<<8)+(q3<<4)+q4);
+					fprintf(log,"call sub at %.3X\n",longOp);
+					call(longOp,mem,&sp,&pc);
 					break;
 				case 0x3:
 					//3XNN: skip next instruction if VX = NN

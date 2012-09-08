@@ -7,3 +7,5 @@ See the links below for more info and the specification that was followed
 https://en.wikipedia.org/wiki/CHIP-8
 
 http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
+
+This doesn't use any special libraries apart from ncurses so it *should* compile on unix based systems without too much trouble.  When running it make sure the terminal window is at least 64x32 characters wide so things will display correctly.

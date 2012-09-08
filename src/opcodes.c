@@ -185,3 +185,18 @@ void addaddr(byte* reg, word* I)
 {
 	*I += *reg;
 }
+
+//00EE	Returns from a subroutine.
+void ret(byte*** sp, byte** pc)
+{
+	*pc = **sp - 0x2;
+	*sp--;
+}
+
+//2NNN: Call subroutine at NNN
+void call(word n,byte* mem,byte*** sp,byte** pc)
+{
+	**sp = *pc;
+	*sp++;
+	*pc = (n+mem)-0x2;
+}
