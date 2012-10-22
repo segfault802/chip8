@@ -131,3 +131,11 @@ void ret(byte*** sp, byte** pc);
 //2NNN: Call subroutine at NNN
 void call(word n,byte* mem,byte*** sp,byte** pc);
 
+/*******************************************/
+
+//FX29 set I to the location of the sprite in VX (might need to hack this)
+//void setSprite(byte* reg, word* I);
+
+//FX33 set memory at I to the bcd of the value in reg
+void bcd(byte* reg, byte* mem, word I);
+

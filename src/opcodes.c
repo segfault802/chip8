@@ -63,7 +63,7 @@ void subxy(byte* regx, byte* regy, byte* vf)
 //loads registers V0 though VX with bytes starting at I
 void load(byte* reg, byte x,byte* mem, word* I)
 {	
-	byte* cpystart =  *I + mem;
+	byte* cpystart = *I + mem;
 	byte* i = cpystart;
 	byte* cpyend = cpystart + x;
 	while(i<=cpyend){
@@ -77,7 +77,7 @@ void load(byte* reg, byte x,byte* mem, word* I)
 //stores bytes in V0 through VX in memory at I
 void stor(byte* reg, byte x, byte* mem, word* I)
 {
-	byte* cpystart =  *I + mem;
+	byte* cpystart = *I + mem;
 	byte* i = cpystart;
 	byte* cpyend = cpystart + x;
 	while(i<=cpyend){
@@ -189,14 +189,34 @@ void addaddr(byte* reg, word* I)
 //00EE	Returns from a subroutine.
 void ret(byte*** sp, byte** pc)
 {
-	*pc = **sp - 0x2;
+	*pc = **sp;
 	*sp--;
 }
 
 //2NNN: Call subroutine at NNN
 void call(word n,byte* mem,byte*** sp,byte** pc)
 {
-	**sp = *pc;
+    **sp = *pc;
 	*sp++;
 	*pc = (n+mem)-0x2;
+}
+
+//FX29 set I to the location of the sprite in VX (might need to hack this)
+//void setSprite(byte* reg, word* I)
+//{
+//}
+
+//FX33 set memory at I to the bcd of the value in reg
+void bcd(byte* reg, byte* mem, word I)
+{
+    byte hund,tens,ones,val;
+    val = *reg;
+    ones = val % 10;
+    val /= 10;
+    tens = val % 10;
+    val /= 10;
+    hund = val;
+    *(mem+I) = (word)hund;
+    *(mem+I+1) = (word)tens;
+    *(mem+I+2) = (word)ones;
 }

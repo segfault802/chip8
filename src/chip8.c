@@ -19,22 +19,24 @@ int main(int argc, char* argv[])
 	initscr();
 
 	//allocate registers and program memory
-	byte  reg[16];
+	byte reg[16]; //16 8 bit registers
 	clearregs(reg);
 	byte* vf = &reg[15];
-	byte mem[4096];
-	byte* pc = mem+0x200;
-	byte* stack[16];
-	byte** sp;	
-	word I;
+	byte mem[4096]; //4KB of main memory (first 512 bytes reserved)
+	byte* pc = mem+0x200; //start the program counter at 0x200 (512)
+	byte* stack[16]; //call stack stores up to 16 address
+	byte** sp = stack;	//stack pointer
+	word I; //address register
 	//some other stuff
 	word instr,longOp;
+    word sprites[16]; //addresses to each sprite in reserved memory
+    preload(mem,sprites);
 	byte q1, q2, q3, q4;
 	byte done = 0;
-	byte *ptr = mem + 0x200;
+	byte* ptr = mem + 0x200;
 	size_t size;
 	FILE *fp;
-	FILE *log = fopen("./bin/log","w");
+	FILE *log = fopen("/home/evany/chip8/bin/log","w");
 	
 	//load the file into memory
 	if(argc > 1){
@@ -52,7 +54,7 @@ int main(int argc, char* argv[])
 		ptr += 0x02;
 	}
 	fclose(fp);
-	printmem(log,mem,0x200,0x223);
+	//printmem(log,mem,0x0,0x200);
 	
 	//main emulation loop
 	//split apart each instruction and determine the opcode
@@ -60,17 +62,17 @@ int main(int argc, char* argv[])
 		fprintf(log,"BEFORE\n");
 		printregs(log,reg);
 		fprintf(log,"I: %.3X PC: %.3X\n",I,pc-mem);
-		printmem(log,mem,0x200,0x223);	
+		//printmem(log,mem,0x200,0x270);	
 		instr = (*pc << 8) + *(pc + 0x1);
 		q1 = getQuartet(instr,1);
 		q2 = getQuartet(instr,2);
 		q3 = getQuartet(instr,3);
 		q4 = getQuartet(instr,4);
-		fprintf(log,"##########\n");
 		if(q1 == 0 && q2 == 0 && q3 == 0 && q4 == 0){
 			done = 1;
 		}
 		else{
+			fprintf(log,"$%X: ",instr);
 			switch(q1){
 				case 0x0:
 					switch(q4){
@@ -97,7 +99,7 @@ int main(int argc, char* argv[])
 					}
 					break;	
 				case 0x2:
-					//2NNN
+					//2NNN call sub at NNN
 					longOp = (word)((q2<<8)+(q3<<4)+q4);
 					fprintf(log,"call sub at %.3X\n",longOp);
 					call(longOp,mem,&sp,&pc);
@@ -249,9 +251,13 @@ int main(int argc, char* argv[])
 							break;
 						case 0x2:
 							//FX29
+                            fprintf(log,"set I to the address of sprite in V%X\n",q2);
+                            I = sprites[*(reg+q2)];
 							break;
 						case 0x3:
-							//FX33: 
+							//FX33:
+                            fprintf(log,"set I to the BCD of V%X\n",q2);
+                            bcd(reg,mem,I); 
 							break;
 						case 0x5:
 							//FX55: store
@@ -269,7 +275,7 @@ int main(int argc, char* argv[])
 			fprintf(log,"AFTER\n");
 			printregs(log,reg);
 			fprintf(log,"I: %.3X PC: %.3X\n",I,pc-mem);
-			printmem(log,mem,0x200,0x223);
+			//printmem(log,mem,0x200,0x270);
 			fprintf(log,"##########\n");
 			//fprintf(log,"%X %X %X %X\n",q1,q2,q3,q4);
 		pc += 0x2;
