@@ -220,3 +220,17 @@ void bcd(byte* reg, byte* mem, word I)
     *(mem+I+1) = (word)tens;
     *(mem+I+2) = (word)ones;
 }
+
+//FX07 set VX to the delay timer
+void readdt(byte* reg, byte* dt)
+{
+    *reg = *dt;
+}
+
+
+//FX15 set the delay timer
+void setdt(byte* reg, byte* dt)
+{
+    *dt = *reg;
+}
+

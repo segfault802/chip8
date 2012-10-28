@@ -7,6 +7,7 @@
 #define MASK_2 0x0F00
 #define MASK_3 0x00F0
 #define MASK_4 0x000F
+#define CLOCK_TICK 16666
 
 typedef unsigned char byte;
 typedef unsigned short word;

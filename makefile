@@ -16,5 +16,8 @@
 ./bin/chip8.o: ./src/chip8.c
 	gcc -o ./bin/chip8.o -c -g ./src/chip8.c
 
+#./bin/time: ./tests/time.c
+#    gcc -o ./bin/time ./tests/time.c
+
 clean:
 	rm -rf ./bin/*

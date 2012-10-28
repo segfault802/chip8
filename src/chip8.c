@@ -2,6 +2,7 @@
 #include <limits.h>
 #include <time.h>
 #include <ncurses.h>
+#include <unistd.h>
 #include "decs.h"
 #include "io.h"
 #include "opcodes.h"
@@ -27,6 +28,7 @@ int main(int argc, char* argv[])
 	byte* stack[16]; //call stack stores up to 16 address
 	byte** sp = stack;	//stack pointer
 	word I; //address register
+    byte dt; //delay timer
 	//some other stuff
 	word instr,longOp;
     word sprites[16]; //addresses to each sprite in reserved memory
@@ -72,6 +74,9 @@ int main(int argc, char* argv[])
 			done = 1;
 		}
 		else{
+            usleep(CLOCK_TICK);
+            if(dt > 0)
+                dt--;
 			fprintf(log,"$%X: ",instr);
 			switch(q1){
 				case 0x0:
@@ -225,6 +230,7 @@ int main(int argc, char* argv[])
 								case 0x7:
 									//FX07: set VX to the delay timer
 									fprintf(log,"set V%X to the delay timer*\n",q2);
+                                    readdt(reg+q2,&dt);
 									break;
 								case 0xA:
 									//FX0A: store next keypress in VX
@@ -237,7 +243,8 @@ int main(int argc, char* argv[])
 								case 0x5:
 									//FX15: set delay timer to VX
 									fprintf(log,"set delay timer to V%X*",q2);
-									break;
+									setdt(reg+q2,&dt);
+                                    break;
 								case 0x8:
 									//FX18: set sound timer to VX
 									fprintf(log,"set sound timer to V%X*",q2);

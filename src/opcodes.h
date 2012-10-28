@@ -45,9 +45,9 @@ FX0A	A key press is awaited, and then stored in VX.
 FX15	Sets the delay timer to VX.
 FX18	Sets the sound timer to VX.
 *FX1E	Adds VX to I.[3]
-FX29	Sets I to the location of the sprite for the character in VX. Characters 0-F (in hexadecimal) 
+*FX29	Sets I to the location of the sprite for the character in VX. Characters 0-F (in hexadecimal) 
 		are represented by a 4x5 font.
-FX33	Stores the Binary-coded decimal representation of VX, with the most significant of three 
+*FX33	Stores the Binary-coded decimal representation of VX, with the most significant of three 
 		digits at the address in I, the middle digit at I plus 1, and the least significant digit at 
 		I plus 2.
 *FX55	Stores V0 to VX in memory starting at address I.[4]
@@ -138,4 +138,14 @@ void call(word n,byte* mem,byte*** sp,byte** pc);
 
 //FX33 set memory at I to the bcd of the value in reg
 void bcd(byte* reg, byte* mem, word I);
+
+
+/*******************************************/
+
+//FX07 set VX to the delay timer
+void readdt(byte* reg, byte* dt);
+
+
+//FX15 set the delay timer
+void setdt(byte* reg, byte* dt);
 
