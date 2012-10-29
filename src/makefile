@@ -1,11 +1,22 @@
-./bin/draw: ./bin/draw.o ./bin/io.o
-	gcc -o ./bin/draw -lncurses ./bin/draw.o ./bin/io.o
+./bin/bcd: ./bin/bcd.o ./bin/opcodes.o
+	gcc -o ./bin/bcd ./bin/opcodes.o ./bin/bcd.o
 
-./bin/draw.o: ./tests/draw.c
-	gcc -o ./bin/draw.o -c ./tests/draw.c
+./bin/opcodes.o: ./opcodes.c
+	gcc -o ./bin/opcodes.o -c -g ./opcodes.c
 
-./bin/io.o: ./io.c
-	gcc -o ./bin/io.o -c ./io.c
+./bin/bcd.o: ./tests/bcd.c
+	gcc -o ./bin/bcd.o -c -g ./tests/bcd.c
+
+
+
+#./bin/draw: ./bin/draw.o ./bin/io.o
+#	gcc -o ./bin/draw -lncurses ./bin/draw.o ./bin/io.o
+
+#./bin/draw.o: ./tests/draw.c
+#	gcc -o ./bin/draw.o -c ./tests/draw.c
+
+#./bin/io.o: ./io.c
+#	gcc -o ./bin/io.o -c ./io.c
 
 #./bin/hello: ./bin/hello.o ./bin/debug.o ./bin/opcodes.o
 #	gcc -o ./bin/hello ./bin/hello.o ./bin/debug.o ./bin/opcodes.o

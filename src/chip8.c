@@ -18,6 +18,7 @@ int main(int argc, char* argv[])
 
 	//initialize ncurses
 	initscr();
+    cbreak();
 
 	//allocate registers and program memory
 	byte reg[16]; //16 8 bit registers
@@ -64,7 +65,7 @@ int main(int argc, char* argv[])
 		fprintf(log,"BEFORE\n");
 		printregs(log,reg);
 		fprintf(log,"I: %.3X PC: %.3X\n",I,pc-mem);
-		//printmem(log,mem,0x200,0x270);	
+		printmem(log,mem,0x2F0,0x2F3);	
 		instr = (*pc << 8) + *(pc + 0x1);
 		q1 = getQuartet(instr,1);
 		q2 = getQuartet(instr,2);
@@ -74,10 +75,9 @@ int main(int argc, char* argv[])
 			done = 1;
 		}
 		else{
-            usleep(CLOCK_TICK);
-            if(dt > 0)
-                dt--;
-			fprintf(log,"$%X: ",instr);
+    		clockStep(&dt);
+            fprintf(log,"DT: %.3X\n",dt);
+            fprintf(log,"$%X: ",instr);
 			switch(q1){
 				case 0x0:
 					switch(q4){
@@ -229,7 +229,7 @@ int main(int argc, char* argv[])
 							switch(q4){
 								case 0x7:
 									//FX07: set VX to the delay timer
-									fprintf(log,"set V%X to the delay timer*\n",q2);
+									fprintf(log,"set V%X to the delay timer\n",q2);
                                     readdt(reg+q2,&dt);
 									break;
 								case 0xA:
@@ -242,7 +242,7 @@ int main(int argc, char* argv[])
 							switch(q4){
 								case 0x5:
 									//FX15: set delay timer to VX
-									fprintf(log,"set delay timer to V%X*",q2);
+									fprintf(log,"set delay timer to V%X",q2);
 									setdt(reg+q2,&dt);
                                     break;
 								case 0x8:
@@ -264,7 +264,7 @@ int main(int argc, char* argv[])
 						case 0x3:
 							//FX33:
                             fprintf(log,"set I to the BCD of V%X\n",q2);
-                            bcd(reg,mem,I); 
+                            bcd(reg+q2,mem,I); 
 							break;
 						case 0x5:
 							//FX55: store

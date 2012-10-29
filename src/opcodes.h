@@ -40,9 +40,9 @@ Opcode	Explanation
 		flipped from set to unset when the sprite is drawn, and to 0 if that doesn't happen.
 EX9E	Skips the next instruction if the key stored in VX is pressed.
 EXA1	Skips the next instruction if the key stored in VX isn't pressed.
-FX07	Sets VX to the value of the delay timer.
+*FX07	Sets VX to the value of the delay timer.
 FX0A	A key press is awaited, and then stored in VX.
-FX15	Sets the delay timer to VX.
+*FX15	Sets the delay timer to VX.
 FX18	Sets the sound timer to VX.
 *FX1E	Adds VX to I.[3]
 *FX29	Sets I to the location of the sprite for the character in VX. Characters 0-F (in hexadecimal) 
@@ -148,4 +148,3 @@ void readdt(byte* reg, byte* dt);
 
 //FX15 set the delay timer
 void setdt(byte* reg, byte* dt);
-

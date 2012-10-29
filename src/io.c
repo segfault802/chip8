@@ -36,3 +36,10 @@ void clearScreen()
 {
 	clear();
 }
+
+void clockStep(byte* dt)
+{
+    usleep(CLOCK_TICK);
+    if((*dt) > 0)
+        (*dt)--;
+}
