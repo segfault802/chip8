@@ -1,5 +1,23 @@
-Implement the remaining opcodes
-	they mostly deal with IO and using the call stack
+
+Improve the renderer
+what: rewrite the drawing code to separate the ncurses calls from CHIP-8 
+draw calls
+
+why: to improve performance by eliminating unncessary calls to ncurses functions
+
+how: have an internal representation of the screen state which CHIP-8 acts on,
+after a drawing call, XOR the updated screen with the previous screen state.  
+That way only pixels which changed are redrawn by ncurses, even if CHIP-8
+redraws a sprite needlessly (example: the coin program, which redraws the H and
+T symbols at every iteration).  This is how windows RDP works
+
+Fix the delay timer so it runs in "real time"
+what: change how the delay timer works so it doesn't rely on usleep
+why: right now the emulator can only execute one instruction per clock tick
+how: use gettimeofday or something that will give microsecond precision, that 
+way the clock can run in real time, allowing multiple instructions to be
+executed per clock tick.  See timer.c
+
 
 Write an assembler and/or disassembler
 	could do the assembler in perl to make parsing ez

@@ -15,10 +15,10 @@ void clearScreen();
 void clockStep(byte* dt);
 
 //EX9E	Skips the next instruction if the key stored in VX is pressed.
-void skip(byte* reg);
+void skip(byte* reg, byte** pc);
 
 //EXA1	Skips the next instruction if the key stored in VX isn't pressed.
-void skipnp(byte* reg);
+void skipnp(byte* reg, byte** pc);
 
 //FX0A waits for a key press and stores it in VX
 void getkey(byte* reg);
