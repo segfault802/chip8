@@ -32,6 +32,7 @@ int main(int argc, char* argv[])
     byte** sp = stack;  //stack pointer
     word I; //address register
     byte dt; //delay timer
+
     //some other stuff
     word instr,longOp;
     word sprites[16]; //addresses to each sprite in reserved memory

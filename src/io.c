@@ -10,13 +10,23 @@ void printRow(byte row)
 {
 	byte i;
 	byte b;
+    char c;
 	for(i=0;i<8;i++){
 		b = (row>>(8-(i+1))) & 1;
 		//printf("%d",b);
-		if(b == 0)
-			addch(' ');
-		else
-			addch(ACS_BLOCK);
+		c = inch();
+        if(b == 0 && c == ' '){
+            addch(' ');
+        }
+		else if (b == 0 && c == ACS_BLOCK){
+            addch(ACS_BLOCK);
+        }
+        else if (b == 1 && c == ' '){
+            addch(ACS_BLOCK);
+        }
+        else{
+            addch(' ');
+        }
 	}
 }
 
