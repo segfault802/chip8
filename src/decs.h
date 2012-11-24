@@ -8,6 +8,8 @@
 #define MASK_3 0x00F0
 #define MASK_4 0x000F
 #define CLOCK_TICK 16666
+#define SCREEN_H 31
+#define SCREEN_W 63
 
 typedef unsigned char byte;
 typedef unsigned short word;

@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
     initscr();
     cbreak();//don't wait for carriage return when reading input
     noecho();//don't print chars to screen
-    nodelay(stdscr,true);
+    nodelay(stdscr,true); //don't wait for input when getch is called
 
     //allocate registers and program memory
     byte reg[16]; //16 8 bit registers
@@ -212,7 +212,7 @@ int main(int argc, char* argv[])
                 case 0xD:
                     //DXYN: draw sprite at VX,VY of height N loaded from I
                     fprintf(log,"draw sprite at V%X,V%X,H%X\n",q2,q3,q4);
-                    drawSprite(*(reg+q2),*(reg+q3),q4,mem+I);
+                    drawSprite(*(reg+q2),*(reg+q3),q4,mem+I,vf);
                     break;
                 case 0xE:
                     switch(q3){

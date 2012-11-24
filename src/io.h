@@ -3,10 +3,10 @@
 #include "decs.h"
 
 //takes a byte and prints the binary representation to the ncurses screen
-void printRow(byte row);
+void printRow(byte row, byte *vf, byte x, byte y);
 
 //DXYN: draws n rows of the sprite pointed to by s at (x,y) on the screen
-void drawSprite(byte x, byte y, byte n, byte* s);
+void drawSprite(byte x, byte y, byte n, byte* s, byte *vf);
 
 //00E0
 void clearScreen();

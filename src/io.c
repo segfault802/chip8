@@ -1,18 +1,23 @@
 #include "io.h"
 #include <stdio.h>
 #include <ncurses.h>
+#include "decs.h"
 
 /*byte* readRow(byte y,byte x)
 {
 }*/
 
-void printRow(byte row)
+void printRow(byte row, byte *vf,byte x,byte y)
 {
 	byte i;
 	byte b;
     char c;
 	for(i=0;i<8;i++){
-		b = (row>>(8-(i+1))) & 1;
+		if(x >= SCREEN_W){
+            x = 0;
+            move(y,x);
+        }
+        b = (row>>(8-(i+1))) & 1;
 		//printf("%d",b);
 		c = inch();
         if(b == 0 && c == ' '){
@@ -26,17 +31,23 @@ void printRow(byte row)
         }
         else{
             addch(' ');
+            *vf = 1;
         }
+        x++;
 	}
 }
 
-void drawSprite(byte x, byte y, byte n, byte* s)
+void drawSprite(byte x, byte y, byte n, byte* s, byte *vf)
 {
 	byte i;
 	move(y,x);
 	for(i=0;i<n;i++){
-		move(y+i,x);
-		printRow(s[i]);
+		if(y >= SCREEN_H)
+            y = 0;
+        move(y,x);
+		printRow(s[i],vf,x,y);
+        y++;
+        
 	}
 	refresh();
 }
