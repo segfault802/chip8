@@ -21,7 +21,15 @@ int main(int argc, char* argv[])
     cbreak();//don't wait for carriage return when reading input
     noecho();//don't print chars to screen
     nodelay(stdscr,true); //don't wait for input when getch is called
-
+    
+    //set up the initial system state
+    SystemState state;
+    state.vf = state.reg + 15;
+    state.pc = state.mem + PROGRAM_START;
+    state.sp = state.stack;
+    state.I = 0;
+    state.dt = 0;
+    
     //allocate registers and program memory
     byte reg[16]; //16 8 bit registers
     clearregs(reg);
@@ -42,21 +50,22 @@ int main(int argc, char* argv[])
     byte* ptr = mem + 0x200;
     size_t size;
     FILE *fp;
-    FILE *log = fopen("/home/evany/chip8/bin/log","w");
+    FILE *log = fopen("./bin/log","w");
     
     //load the file into memory
     if(argc > 1){
         fp = fopen(argv[1],"rb");
-        fprintf(log,"opening %s\n",argv[1]);
+        //fprintf(log,"opening %s\n",argv[1]);
     }
     else{
-        fprintf(log,"no file specified!\n");
+        //fprintf(log,"no file specified!\n");
+        printf("no input file!\n");
         return 1;
     }
     while(!feof(fp)){
         //fprintf(log,"Pointer Address: %p\n",ptr);
         size = fread(ptr,1,2,fp);   
-        fprintf(log,"Read %d bytes, %.2X%.2X\n",size,*ptr,*(ptr+0x1));
+        //fprintf(log,"Read %d bytes, %.2X%.2X\n",size,*ptr,*(ptr+0x1));
         ptr += 0x02;
     }
     fclose(fp);

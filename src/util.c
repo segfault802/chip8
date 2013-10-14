@@ -3,7 +3,7 @@
 #include "decs.h"
 
 
-
+//takes a 16 bit word and returns the value of the ith 4 bits
 byte getQuartet(word w, byte i)
 {
     byte quartet;
@@ -65,6 +65,19 @@ void preload(byte* mem,word* map)
         map[i] = offset;
         offset += 5; 
     }
+}
+
+//set up the initial state of the registers and memory
+SystemState initialize()
+{
+    SystemState state;
+    state.reg = (byte*)malloc(REG_COUNT);
+    state.vf = &state.reg[REG_COUNT-1];
+    state.mem = (byte*)malloc(MEM_SIZE);
+    state.pc = state.mem+PROGRAM_START;
+    state.stack = (byte**)malloc(STACK_SIZE);
+    state.sp = state.stack;
+    return state;
 }
 
 /*

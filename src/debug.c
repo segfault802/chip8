@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "debug.h"
 
-//print the contents of all registers
+//print the contents of all registers to fp
 void printregs(FILE *fp,byte* reg)
 {
 	int i, linecount = 0;
@@ -19,6 +19,8 @@ void printregs(FILE *fp,byte* reg)
 	}
 	fprintf(fp,"\n");
 }
+
+//clears all registers
 void clearregs(byte* reg)
 {	
 	int i;

@@ -47,7 +47,6 @@ void drawSprite(byte x, byte y, byte n, byte* s, byte *vf)
         move(y,x);
 		printRow(s[i],vf,x,y);
         y++;
-        
 	}
 	refresh();
 }
