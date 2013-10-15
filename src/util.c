@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "decs.h"
+#include "debug.h"
 
 
 //takes a 16 bit word and returns the value of the ith 4 bits
@@ -68,16 +69,12 @@ void preload(byte* mem,word* map)
 }
 
 //set up the initial state of the registers and memory
-SystemState initialize()
+void initialize(SystemState* state)
 {
-    SystemState state;
-    state.reg = (byte*)malloc(REG_COUNT);
-    state.vf = &state.reg[REG_COUNT-1];
-    state.mem = (byte*)malloc(MEM_SIZE);
-    state.pc = state.mem+PROGRAM_START;
-    state.stack = (byte**)malloc(STACK_SIZE);
-    state.sp = state.stack;
-    return state;
+    clearregs(state->reg);
+    state->vf = &state->reg[REG_COUNT-1];
+    state->pc = state->mem+PROGRAM_START;
+    state->sp = state->stack;
 }
 
 /*

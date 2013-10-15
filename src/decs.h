@@ -28,6 +28,5 @@
         byte** sp;                 //stack pointer
         word I;                    //address register
         byte dt;                   //delay timer
-        FILE *log;                 //a file handle to make logging easier
     } SystemState;
 #endif

@@ -1,6 +1,6 @@
 all: ./bin/chip8
 
-tests: ./bin/draw ./bin/logic ./bin/hello ./bin/time
+tests: ./bin/draw ./bin/logic ./bin/hello ./bin/time ./bin/inittest
 
 ./bin/chip8: ./bin/chip8.o ./bin/debug.o ./bin/opcodes.o ./bin/util.o ./bin/io.o
 	gcc -o ./bin/chip8  -lncurses ./bin/chip8.o ./bin/opcodes.o ./bin/debug.o ./bin/util.o ./bin/io.o
@@ -20,6 +20,8 @@ tests: ./bin/draw ./bin/logic ./bin/hello ./bin/time
 ./bin/logic: ./bin/logic.o ./bin/debug.o ./bin/opcodes.o
 	gcc -o ./bin/logic ./bin/logic.o ./bin/debug.o ./bin/opcodes.o
 
+./bin/inittest: ./bin/util.o ./bin/inittest.o ./bin/debug.o
+	gcc -o ./bin/inittest ./bin/util.o ./bin/inittest.o ./bin/debug.o
 
 ./bin/util.o: ./src/util.c
 	gcc -o ./bin/util.o -c -g ./src/util.c
@@ -50,3 +52,5 @@ tests: ./bin/draw ./bin/logic ./bin/hello ./bin/time
 ./bin/hello.o: ./src/tests/hello.c
 	gcc -o ./bin/hello.o -c -g ./src/tests/hello.c
 
+./bin/inittest.o: ./src/tests/inittest.c
+	gcc -o ./bin/inittest.o -c -g ./src/tests/inittest.c
