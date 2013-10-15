@@ -1,3 +1,5 @@
+
+CFLAGS=-g
 all: ./bin/chip8
 
 tests: ./bin/draw ./bin/logic ./bin/hello ./bin/time ./bin/inittest
@@ -23,34 +25,8 @@ tests: ./bin/draw ./bin/logic ./bin/hello ./bin/time ./bin/inittest
 ./bin/inittest: ./bin/util.o ./bin/inittest.o ./bin/debug.o
 	gcc -o ./bin/inittest ./bin/util.o ./bin/inittest.o ./bin/debug.o
 
-./bin/util.o: ./src/util.c
-	gcc -o ./bin/util.o -c -g ./src/util.c
+./bin/%.o: ./src/%.c
+	gcc -o $@ -c $(CFLAGS) $<
 
-./bin/debug.o: ./src/debug.c
-	gcc -o ./bin/debug.o -c -g ./src/debug.c
-
-./bin/opcodes.o: ./src/opcodes.c ./src/decs.h
-	gcc -o ./bin/opcodes.o -c -g ./src/opcodes.c
-
-./bin/io.o: ./src/io.c ./src/decs.h
-	gcc -o./bin/io.o -c -g ./src/io.c
-
-./bin/chip8.o: ./src/chip8.c ./src/decs.h
-	gcc -o ./bin/chip8.o -c -g ./src/chip8.c
-
-
-#Some tests
-./bin/bcd.o: ./src/tests/bcd.c
-	gcc -o ./bin/bcd.o -c -g ./src/tests/bcd.c
-
-./bin/draw.o: ./src/tests/draw.c
-	gcc -o ./bin/draw.o -c ./src/tests/draw.c
-
-./bin/logic.o: ./src/tests/logic.c
-	gcc -o ./bin/logic.o -c -g ./src/tests/logic.c
-
-./bin/hello.o: ./src/tests/hello.c
-	gcc -o ./bin/hello.o -c -g ./src/tests/hello.c
-
-./bin/inittest.o: ./src/tests/inittest.c
-	gcc -o ./bin/inittest.o -c -g ./src/tests/inittest.c
+./bin/%.o: ./src/tests/%.c
+	gcc -o $@ -c $(CFLAGS) $<
