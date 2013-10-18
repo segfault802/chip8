@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <limits.h>
+#include <string.h>
 #include "../decs.h"
 #include "../opcodes.h"
 #include "../debug.h"
@@ -46,7 +47,7 @@ int main()
 	stor(reg,0xB,mem,&I);
 	//printmem(stdout,mem,0x200,0x20F);
 	//zero all the registers
-	clearregs(reg);
+	memset(reg,0,REG_COUNT);
 	printf("Memory after saving\n");
 	printmem(stdout,mem,0x200,0x20F);
 	printf("Read memory as a string, line below should read \"Hello World\"\n");
@@ -61,7 +62,7 @@ int main()
 	
 	//test the other opcodes
 	printf("Clear registers\n");
-	clearregs(reg);
+	memset(reg,0,REG_COUNT);
 	printregs(stdout,reg);
 	seti(reg+0x0,0x1);
 	printf("set V0 to 1\n");

@@ -20,15 +20,6 @@ void printregs(FILE *fp,byte* reg)
 	fprintf(fp,"\n");
 }
 
-//clears all registers
-void clearregs(byte* reg)
-{	
-	int i;
-	for(i=0;i<16;i++){
-		reg[i] = 0;
-	}
-}
-
 //print contents of memory from start to end
 //addresses are chip8 normalized
 void printmem(FILE* fp,byte* mem,word start, word end)

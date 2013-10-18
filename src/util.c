@@ -71,7 +71,7 @@ void preload(byte* mem,word* map)
 //set up the initial state of the registers and memory
 void initialize(SystemState* state)
 {
-    clearregs(state->reg);
+    memset(state->reg,0,REG_COUNT);
     state->vf = &state->reg[REG_COUNT-1];
     state->pc = state->mem+PROGRAM_START;
     state->sp = state->stack;
