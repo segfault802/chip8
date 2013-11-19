@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <string.h>
 #include "decs.h"
+#include "debug.h"
 
 
-
+//takes a 16 bit word and returns the value of the ith 4 bits
 byte getQuartet(word w, byte i)
 {
     byte quartet;
@@ -67,14 +68,11 @@ void preload(byte* mem,word* map)
     }
 }
 
-/*
-int main()
+//set up the initial state of the registers and memory
+void initialize(SystemState* state)
 {
-    word instr = 0xA21E;
-    printf("%X\n",instr);
-    printf("The first part is %X\n",getQuartet(instr,1));   
-    printf("The second part is %X\n",getQuartet(instr,2));
-    printf("The third part is %X\n",getQuartet(instr,3));   
-    printf("The fourth part is %X\n",getQuartet(instr,4));
-    return 0;
-}*/
+    memset(state->reg,0,REG_COUNT);
+    state->vf = &state->reg[REG_COUNT-1];
+    state->pc = state->mem+PROGRAM_START;
+    state->sp = state->stack;
+}

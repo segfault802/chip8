@@ -1,7 +1,6 @@
 #include <ncurses.h>
 #include "../io.h"
 
-
 //test it
 int main()
 {
@@ -22,28 +21,30 @@ int main()
 	byte E[5] = {0xf0,0x80,0xf0,0x80,0xf0};
 	byte F[5] = {0xf0,0x80,0xf0,0x80,0x80};
 	byte smiley[5] = {0x18,0x24,0x42,0x81};	
+
+    byte vf = 15;    
 	
 	initscr();
 	//code
 	move(0,25);
 	printw("Printing some sprites!");
-	drawSprite(0,2,5,zero);
-	drawSprite(8,2,5,one);
-	drawSprite(16,2,5,two);
-	drawSprite(24,2,5,three);
-	drawSprite(32,2,5,four);
-	drawSprite(40,2,5,five);
-	drawSprite(48,2,5,six);
-	drawSprite(56,2,5,seven);
-	drawSprite(0,10,5,eight);
-	drawSprite(8,10,5,nine);
-	drawSprite(16,10,5,A);
-	drawSprite(24,10,5,B);
-	drawSprite(32,10,5,C);
-	drawSprite(40,10,5,D);
-	drawSprite(48,10,5,E);
-	drawSprite(56,10,5,F);
-	//drawSprite(28,15,4,smiley);
+	drawSprite(0,2,5,zero,&vf);
+	drawSprite(8,2,5,one,&vf);
+	drawSprite(16,2,5,two,&vf);
+	drawSprite(24,2,5,three,&vf);
+	drawSprite(32,2,5,four,&vf);
+	drawSprite(40,2,5,five,&vf);
+	drawSprite(48,2,5,six,&vf);
+	drawSprite(56,2,5,seven,&vf);
+	drawSprite(0,10,5,eight,&vf);
+	drawSprite(8,10,5,nine,&vf);
+	drawSprite(16,10,5,A,&vf);
+	drawSprite(24,10,5,B,&vf);
+	drawSprite(32,10,5,C,&vf);
+	drawSprite(40,10,5,D,&vf);
+	drawSprite(48,10,5,E,&vf);
+	drawSprite(56,10,5,F,&vf);
+	drawSprite(28,15,4,smiley,&vf);
 	getch();
 	clearScreen();
 	getch();
