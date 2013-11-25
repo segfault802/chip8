@@ -34,29 +34,16 @@ int main(int argc, char* argv[])
     preload(state.mem,sprites);
     byte q1, q2, q3, q4;
     byte done = 0;
-    byte* ptr = state.mem + 0x200;
-    size_t size;
-    FILE *fp;
     
     //load the file into memory
     if(argc > 1){
-        fp = fopen(argv[1],"rb");
-        //fprintf(log,"opening %s\n",argv[1]);
+        loadFile(argv[1],&state);
     }
     else{
-        //fprintf(log,"no file specified!\n");
         printf("no input file!\n");
         return 1;
     }
-    while(!feof(fp)){
-        //fprintf(log,"Pointer Address: %p\n",ptr);
-        size = fread(ptr,1,2,fp);   
-        fprintf(log,"Read %d bytes, %.2X%.2X\n",size,*ptr,*(ptr+0x1));
-        ptr += 0x02;
-    }
-    fclose(fp);
-    printmem(log,state.mem,0x200,0x220);
-    
+   
     //main emulation loop
     //split apart each instruction and determine the opcode
     while(!done){

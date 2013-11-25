@@ -76,3 +76,16 @@ void initialize(SystemState* state)
     state->pc = state->mem+PROGRAM_START;
     state->sp = state->stack;
 }
+
+//Copies the specified file into CHIP-8 memory
+void loadFile(char* file, SystemState* state)
+{
+    size_t size;
+    byte* ptr = state->mem + 0x200;
+    FILE* fp = fopen(file,"rb");
+    while(!feof(fp)){
+        size = fread(ptr,1,2,fp);   
+        ptr += 0x02;
+    }
+    fclose(fp);
+}
