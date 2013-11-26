@@ -4,8 +4,8 @@ all: ./bin/chip8
 
 tests: ./bin/draw ./bin/logic ./bin/hello ./bin/time ./bin/inittest
 
-./bin/chip8: ./bin/chip8.o ./bin/debug.o ./bin/opcodes.o ./bin/util.o ./bin/io.o
-	$(CC) -o ./bin/chip8  -lncurses ./bin/chip8.o ./bin/opcodes.o ./bin/debug.o ./bin/util.o ./bin/io.o
+./bin/chip8: ./bin/chip8.o ./bin/debug.o ./bin/opcodes.o ./bin/util.o ./bin/io.o ./bin/emu.o
+	$(CC) -o ./bin/chip8  -lncurses ./bin/chip8.o ./bin/opcodes.o ./bin/debug.o ./bin/util.o ./bin/io.o ./bin/emu.o
 
 ./bin/draw: ./bin/draw.o ./bin/io.o
 	$(CC) -o ./bin/draw -lncurses ./bin/draw.o ./bin/io.o

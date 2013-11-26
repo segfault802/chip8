@@ -26,9 +26,8 @@ byte getQuartet(word w, byte i)
 }
 
 //preload all the sprites into interpreter reserved memory at 0x1B0 (432)
-void preload(byte* mem,word* map)
+void preload(byte* mem)
 {
-    byte i,offset;
     byte zero[5] = {0xf0,0x90,0x90,0x90,0xf0};
     byte one[5] = {0x20,0x60,0x20,0x20,0x70}; 
     byte two[5] = {0xf0,0x10,0xf0,0x80,0xf0}; 
@@ -61,11 +60,6 @@ void preload(byte* mem,word* map)
     memcpy(mem+65,D,5);
     memcpy(mem+70,E,5);
     memcpy(mem+75,F,5);
-    offset = 0;
-    for(i=0;i<16;i++){
-        map[i] = offset;
-        offset += 5; 
-    }
 }
 
 //set up the initial state of the registers and memory
