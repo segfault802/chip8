@@ -6,16 +6,15 @@
 #include "util.h"
 
 //Executes the opcode based on the split instruction passed in (q1-q4) 
-void executeOp(SystemState* state, word instr)
+void executeOp(SystemState* state, Instruction* instr)
 {
     byte q1,q2,q3,q4;
-    int  opcode;
     word longOp;
-    q1 = getQuartet(instr,1);
-    q2 = getQuartet(instr,2);
-    q3 = getQuartet(instr,3);
-    q4 = getQuartet(instr,4);
-    opcode = lookupOp(instr);
+    byte opcode = lookupOp(instr);
+    q1 = instr->unpack.q1;
+    q2 = instr->unpack.q2;
+    q3 = instr->unpack.q3;
+    q4 = instr->unpack.q4;
     switch(opcode){
         case 0: 
             clearScreen();
@@ -176,16 +175,11 @@ void executeOp(SystemState* state, word instr)
 //Determines what opcode the given instruction represents
 //Returns an integer corresponding to the opcode which can be used
 //by various other functions to do things
-int lookupOp(word instr)
-{
-    byte q1,q2,q3,q4;
-    q1 = getQuartet(instr,1);
-    q2 = getQuartet(instr,2);
-    q3 = getQuartet(instr,3);
-    q4 = getQuartet(instr,4); 
-    switch(q1){
+byte lookupOp(Instruction* instr)
+{   
+    switch(instr->unpack.q1){
         case 0x0:
-            switch(q4){
+            switch(instr->unpack.q4){
                 case 0x0: return 0;
                 case 0xE: return 1;
                 default: return 2;
@@ -198,7 +192,7 @@ int lookupOp(word instr)
         case 0x6: return 8;
         case 0x7: return 9;
         case 0x8:
-            switch(q4){
+            switch(instr->unpack.q4){
                 case 0x0: return 10;
                 case 0x1: return 11;
                 case 0x2: return 12;
@@ -215,19 +209,19 @@ int lookupOp(word instr)
         case 0xC: return 22;
         case 0xD: return 23;
         case 0xE:
-            switch(q3){
+            switch(instr->unpack.q3){
                 case 0x9: return 24;
                 case 0xA: return 25;
             }
         case 0xF:
-            switch(q3){
+            switch(instr->unpack.q3){
                 case 0x0:
-                    switch(q4){
+                    switch(instr->unpack.q4){
                         case 0x7: return 26;
                         case 0xA: return 27;
                     }
                 case 0x1:
-                    switch(q4){
+                    switch(instr->unpack.q4){
                         case 0x5: return 28;
                         case 0x8: return 29;
                         case 0xE: return 30;

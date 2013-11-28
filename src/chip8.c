@@ -30,9 +30,8 @@ int main(int argc, char* argv[])
     initialize(&state);
     
     //some other stuff
-    word instr;
+    Instruction instr;
     preload(state.mem);
-    byte q1, q2, q3, q4;
     byte done = 0;
     
     //load the file into memory
@@ -51,26 +50,22 @@ int main(int argc, char* argv[])
         printregs(log,state.reg);
         fprintf(log,"I: %.3X PC: %.3X\n",state.I,state.pc-state.mem);
         printmem(log,state.mem,0x2F0,0x2F3);  
-        instr = (*(state.pc) << 8) + *(state.pc + 0x1);
-        q1 = getQuartet(instr,1);
-        q2 = getQuartet(instr,2);
-        q3 = getQuartet(instr,3);
-        q4 = getQuartet(instr,4);
-        if(q1 == 0 && q2 == 0 && q3 == 0 && q4 == 0){
+        instr.pack = (*(state.pc) << 8) + *(state.pc + 0x1);
+        if(instr.pack == 0){
             done = 1;
         }
         else{
             clockStep(&state.dt);
             fprintf(log,"DT: %.3X\n",state.dt);
-            fprintf(log,"$%X: ",instr);
-            executeOp(&state,instr);
+            fprintf(log,"$%X: ",instr.pack);
+            executeOp(&state,&instr);
             fprintf(log,"AFTER\n");
             printregs(log,state.reg);
             fprintf(log,"I: %.3X PC: %.3X\n",state.I,state.pc-state.mem);
             //printmem(log,mem,0x200,0x270);
             fprintf(log,"##########\n");
             //fprintf(log,"%X %X %X %X\n",q1,q2,q3,q4);
-        state.pc += 0x2;
+            state.pc += 0x2;
         }
     }
     getch();

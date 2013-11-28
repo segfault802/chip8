@@ -29,4 +29,18 @@
         word I;                    //address register
         byte dt;                   //delay timer
     } SystemState;
+
+    //A container for a single 16 bit instruction
+    //the identifiers in the 'unpack' struct need to be 
+    //reversed due to endianness
+    typedef union {
+        struct {
+            byte q4:4;
+            byte q3:4;
+            byte q2:4;
+            byte q1:4;
+        } unpack;
+        word pack;
+    } Instruction;
+        
 #endif

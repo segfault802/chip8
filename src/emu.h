@@ -1,5 +1,5 @@
 #include "decs.h"
 
 
-void executeOp(SystemState* state, word instr);
-int lookupOp(word instr);
+void executeOp(SystemState* state, Instruction* instr);
+byte lookupOp(Instruction* instr);

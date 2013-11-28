@@ -4,27 +4,6 @@
 #include "debug.h"
 
 
-//takes a 16 bit word and returns the value of the ith 4 bits
-byte getQuartet(word w, byte i)
-{
-    byte quartet;
-    switch(i){
-        case 1:
-            quartet = w >> 12;
-            break;
-        case 2:
-            quartet = (w & 0x0F00) >> 8;
-            break;
-        case 3:
-            quartet = (w & 0x00F0) >> 4;
-            break;
-        case 4:
-            quartet = w & 0x000F;
-            break;
-    }
-    return quartet;
-}
-
 //preload all the sprites into interpreter reserved memory at 0x1B0 (432)
 void preload(byte* mem)
 {
