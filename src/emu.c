@@ -1,25 +1,30 @@
 #include <ncurses.h>
 #include "decs.h"
+#include "emu.h"
+#include "io.h"
 #include "opcodes.h"
 #include "util.h"
 
 //Executes the opcode based on the split instruction passed in (q1-q4) 
-void executeOp(SystemState* state, byte q1, byte q2, byte q3, byte q4)
+void executeOp(SystemState* state, word instr)
 {
+    byte q1,q2,q3,q4;
+    int  opcode;
     word longOp;
-    switch(q1){
-        case 0x0:
-            switch(q4){
-                case 0x0:
-                    clearScreen();
-                    break;
-                case 0xE:
-                    //fprintf(log,"return from sub\n");
-                    ret(&state->sp,&state->pc);
-                    break;
-            }       
+    q1 = getQuartet(instr,1);
+    q2 = getQuartet(instr,2);
+    q3 = getQuartet(instr,3);
+    q4 = getQuartet(instr,4);
+    opcode = lookupOp(instr);
+    switch(opcode){
+        case 0: 
+            clearScreen();
             break;
-        case 0x1:
+        case 1:
+            //fprintf(log,"return from sub\n");
+            ret(&state->sp,&state->pc);
+            break;       
+        case 3:
             longOp = (word)((q2<<8)+(q3<<4)+q4);
             //fprintf(log,"jump to %.3X\n",longOp);
             if(state->pc == state->mem+longOp){
@@ -30,168 +35,148 @@ void executeOp(SystemState* state, byte q1, byte q2, byte q3, byte q4)
                 jmp(longOp,state->mem,&state->pc);
             }
             break;  
-        case 0x2:
+        case 4:
             longOp = (word)((q2<<8)+(q3<<4)+q4);
             //fprintf(log,"call sub at %.3X\n",longOp);
             call(longOp,state->mem,&state->sp,&state->pc);
             break;
-        case 0x3:
+        case 5:
             //fprintf(log,"skip if V%X = %.2X\n",q2,(q3<<4)+q4);
             seq(state->reg+q2,(q3<<4)+q4,&state->pc);
             break;
-        case 0x4:
+        case 6:
             //fprintf(log,"skip if V%X != %.2X\n",q2,(q3<<4)+q4);
             sne(state->reg+q2,(q3<<4)+q4,&state->pc);
             break;
-        case 0x5:
+        case 7:
             //fprintf(log,"skip if V%X = V%X\n",q2,q3);
             sey(state->reg+q2,state->reg+q3,&state->pc);
             break;
-        case 0x6:
+        case 8:
             //fprintf(log,"set V%X to %.2X\n",q2,(q3<<4)+q4);
             seti(state->reg+q2,(q3<<4)+q4);
             break;
-        case 0x7:
+        case 9:
             //fprintf(log,"add %.2X to V%X\n",(q3<<4)+q4,q2); 
             addi(state->reg+q2,(q3<<4)+q4);
             break;
-        case 0x8:
-            switch(q4){
-                case 0x0:
-                    //fprintf(log,"set V%X to V%X\n",q2,q3);
-                    set(state->reg+q2,state->reg+q3);
-                    break;  
-                case 0x1:
-                    //8XY1: bitwise OR
-                    //fprintf(log,"V%X OR V%X\n",q2,q3);
-                    or(state->reg+q2,state->reg+q3);
-                    break;
-                case 0x2:
-                    //8XY2: bitwise AND
-                    //fprintf(log,"V%X AND V%X\n",q2,q3);
-                    and(state->reg+q2,state->reg+q3);
-                    break;
-                case 0x3:
-                    //fprintf(log,"V%X XOR V%X\n",q2,q3);
-                    xor(state->reg+q2,state->reg+q3);
-                    break;
-                case 0x4:
-                    //fprintf(log,"V%X + V%X\n",q2,q3);
-                    add(state->reg+q2,state->reg+q3,state->vf);
-                    break;
-                case 0x5:
-                    //fprintf(log,"V%X - V%X\n",q2,q3);
-                    subyx(state->reg+q2,state->reg+q3,state->vf);
-                    break;
-                case 0x6:
-                    //fprintf(log,"V%X >> 1\n",q2);
-                    shr(state->reg+q2,state->vf);
-                    break;
-                case 0x7:
-                    //8XY7: subtract x from y
-                    //fprintf(log,"V%X - V%X\n",q3,q2);
-                    subxy(state->reg+q2,state->reg+q3,state->vf);
-                    break;
-                case 0xE:
-                    //fprintf(log,"V%X << 1\n",q2);
-                    shl(state->reg+q2,state->vf);
-                    break;
-            }
+        case 10:
+            //fprintf(log,"set V%X to V%X\n",q2,q3);
+            set(state->reg+q2,state->reg+q3);
+            break;  
+        case 11:
+            //8XY1: bitwise OR
+            //fprintf(log,"V%X OR V%X\n",q2,q3);
+            or(state->reg+q2,state->reg+q3);
             break;
-        case 0x9:
+        case 12:
+            //8XY2: bitwise AND
+            //fprintf(log,"V%X AND V%X\n",q2,q3);
+            and(state->reg+q2,state->reg+q3);
+            break;
+        case 13:
+            //fprintf(log,"V%X XOR V%X\n",q2,q3);
+            xor(state->reg+q2,state->reg+q3);
+            break;
+        case 14:
+            //fprintf(log,"V%X + V%X\n",q2,q3);
+            add(state->reg+q2,state->reg+q3,state->vf);
+            break;
+        case 15:
+            //fprintf(log,"V%X - V%X\n",q2,q3);
+            subyx(state->reg+q2,state->reg+q3,state->vf);
+            break;
+        case 16:
+            //fprintf(log,"V%X >> 1\n",q2);
+            shr(state->reg+q2,state->vf);
+            break;
+        case 17:
+            //8XY7: subtract x from y
+            //fprintf(log,"V%X - V%X\n",q3,q2);
+            subxy(state->reg+q2,state->reg+q3,state->vf);
+            break;
+        case 18:
+            //fprintf(log,"V%X << 1\n",q2);
+            shl(state->reg+q2,state->vf);
+            break;
+        case 19:
             //fprintf(log,"skip if V%X != V%X\n",q2,q3);
             sney(state->reg+q2,state->reg+q3,&state->pc);
             break;
-        case 0xA:
+        case 20:
             longOp = (word)((q2<<8)+(q3<<4)+q4);
             //fprintf(log,"set I to %.3X\n",longOp);
             iset(&state->I,longOp);
             break;  
-        case 0xB:
+        case 21:
             longOp = (word)((q2<<8)+(q3<<4)+q4);
             //fprintf(log,"jump to %.3X + V0\n",longOp);
             jmp0(state->reg,longOp,&state->pc);
             break;
-        case 0xC:
+        case 22:
             //fprintf(log,"set V%X to (rand & %.2X)\n",q2,(q3<<4)+q4);
             setrand(state->reg+q2,(q3<<4)+q4);
             break;
-        case 0xD:
+        case 23:
             //fprintf(log,"draw sprite at V%X,V%X,H%X\n",q2,q3,q4);
             drawSprite(*(state->reg+q2),*(state->reg+q3),q4,state->mem+state->I,state->vf);
             break;
-        case 0xE:
-            switch(q3){
-                case 0x9:
-                    //fprintf(log,"skip if key in V%X is pressed*\n",q2);
-                    skip(state->reg+q2,&state->pc);
-                    break;
-                case 0xA:
-                    //fprintf(log,"skip if key in V%X isn't pressed*\n",q2);
-                    skipnp(state->reg+q2,&state->pc);
-                    break;
-            }
+        case 24:
+            //fprintf(log,"skip if key in V%X is pressed*\n",q2);
+            skip(state->reg+q2,&state->pc);
             break;
-        case 0xF:
-            switch(q3){
-                case 0x0:
-                    switch(q4){
-                        case 0x7:
-                            //fprintf(log,"set V%X to the delay timer\n",q2);
-                            readdt(state->reg+q2,&state->dt);
-                            break;
-                        case 0xA:
-                            //fprintf(log,"store next keypress in V%X*\n",q2);
-                            getkey(state->reg+q2);
-                            break;
-                    }
-                    break;
-                case 0x1:
-                    switch(q4){
-                        case 0x5:
-                            //fprintf(log,"set delay timer to V%X",q2);
-                            setdt(state->reg+q2,&state->dt);
-                            break;
-                        case 0x8:
-                            //FX18: set sound timer to VX
-                            //fprintf(log,"set sound timer to V%X*",q2);
-                            break;
-                        case 0xE:
-                            //FX1E: add VX to I
-                            //fprintf(log,"I += V%X\n",q2);
-                            addaddr(state->reg+q2,&state->I);
-                            break;
-                    }
-                    break;
-                case 0x2:
-                    //FX29
-                    //fprintf(log,"set I to the address of sprite in V%X\n",q2);
-                    state->I = *(state->reg+q2) * 5;
-                    break;
-                case 0x3:
-                    //FX33:
-                    //fprintf(log,"set I to the BCD of V%X\n",q2);
-                    bcd(state->reg+q2,state->mem,state->I); //possible bug 
-                    break;
-                case 0x5:
-                    //FX55: store
-                    //fprintf(log,"store V0 - V%X in memory starting at I\n",q2);
-                    stor(state->reg,q2,state->mem,&state->I);
-                    break;
-                case 0x6:
-                    //FX65: load
-                    //fprintf(log,"load V0 - V%X with bytes starting at I\n",q2);
-                    load(state->reg,q2,state->mem,&state->I);
-                    break;
+        case 25:
+            //fprintf(log,"skip if key in V%X isn't pressed*\n",q2);
+            skipnp(state->reg+q2,&state->pc);
             break;
-        }
-    } 
+        case 26:
+            //fprintf(log,"set V%X to the delay timer\n",q2);
+            readdt(state->reg+q2,&state->dt);
+            break;
+        case 27:
+            //fprintf(log,"store next keypress in V%X*\n",q2);
+            getkey(state->reg+q2);
+            break;
+        case 28:
+            //fprintf(log,"set delay timer to V%X",q2);
+            setdt(state->reg+q2,&state->dt);
+            break;
+        case 29:
+            //FX18: set sound timer to VX
+            //fprintf(log,"set sound timer to V%X*",q2);
+            break;
+        case 30:
+            //FX1E: add VX to I
+            //fprintf(log,"I += V%X\n",q2);
+            addaddr(state->reg+q2,&state->I);
+            break;
+        case 31:
+            //FX29
+            //fprintf(log,"set I to the address of sprite in V%X\n",q2);
+            state->I = *(state->reg+q2) * 5;
+            break;
+        case 32:
+            //FX33:
+            //fprintf(log,"set I to the BCD of V%X\n",q2);
+            bcd(state->reg+q2,state->mem,state->I); //possible bug 
+            break;
+        case 33:
+            //FX55: store
+            //fprintf(log,"store V0 - V%X in memory starting at I\n",q2);
+            stor(state->reg,q2,state->mem,&state->I);
+            break;
+        case 34:
+            //FX65: load
+            //fprintf(log,"load V0 - V%X with bytes starting at I\n",q2);
+            load(state->reg,q2,state->mem,&state->I);
+            break;
+    }
 }
 
 //Determines what opcode the given instruction represents
 //Returns an integer corresponding to the opcode which can be used
 //by various other functions to do things
-byte lookupOp(word instr)
+int lookupOp(word instr)
 {
     byte q1,q2,q3,q4;
     q1 = getQuartet(instr,1);

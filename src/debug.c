@@ -6,16 +6,9 @@
 //print the contents of all registers to fp
 void printregs(FILE *fp,byte* reg)
 {
-	int i, linecount = 0;
+	int i;
 	for(i=0;i<16;i++){
-		/*if(linecount > 8){
-			fprintf(fp,"\n");
-			linecount = 0;
-		}
-		else{
-			linecount++;
-		}*/
-		fprintf(fp,"V%X:%X ",i,reg[i]);
+	    fprintf(fp,"V%X:%X ",i,reg[i]);
 	}
 	fprintf(fp,"\n");
 }

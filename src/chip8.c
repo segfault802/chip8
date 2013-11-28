@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
     initialize(&state);
     
     //some other stuff
-    word instr,longOp;
+    word instr;
     preload(state.mem);
     byte q1, q2, q3, q4;
     byte done = 0;
@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
             clockStep(&state.dt);
             fprintf(log,"DT: %.3X\n",state.dt);
             fprintf(log,"$%X: ",instr);
-            executeOp(&state,q1,q2,q3,q4);
+            executeOp(&state,instr);
             fprintf(log,"AFTER\n");
             printregs(log,state.reg);
             fprintf(log,"I: %.3X PC: %.3X\n",state.I,state.pc-state.mem);
