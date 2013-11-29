@@ -2,4 +2,3 @@
 
 
 void executeOp(SystemState* state, Instruction* instr);
-byte lookupOp(Instruction* instr);

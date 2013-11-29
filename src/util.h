@@ -8,3 +8,5 @@ void preload(byte* mem);
 void initialize(SystemState* state);
 
 void loadFile(char* file, SystemState* state);
+
+byte lookupOp(Instruction* instr);
