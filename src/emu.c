@@ -20,15 +20,12 @@ void executeOp(SystemState* state, Instruction* instr)
             clearScreen();
             break;
         case 1:
-            //fprintf(log,"return from sub\n");
             ret(&state->sp,&state->pc);
             break;       
         case 3:
             longOp = (word)((q2<<8)+(q3<<4)+q4);
-            //fprintf(log,"jump to %.3X\n",longOp);
             if(state->pc == state->mem+longOp){
-                //fprintf(log,"Entered an infinite loop through a recursive jump! breaking...\n");
-                //done = 1;
+                //done = 1; //detect if we've entered an infinite loop
             }
             else{
                 jmp(longOp,state->mem,&state->pc);
@@ -36,108 +33,80 @@ void executeOp(SystemState* state, Instruction* instr)
             break;  
         case 4:
             longOp = (word)((q2<<8)+(q3<<4)+q4);
-            //fprintf(log,"call sub at %.3X\n",longOp);
             call(longOp,state->mem,&state->sp,&state->pc);
             break;
         case 5:
-            //fprintf(log,"skip if V%X = %.2X\n",q2,(q3<<4)+q4);
             seq(state->reg+q2,(q3<<4)+q4,&state->pc);
             break;
         case 6:
-            //fprintf(log,"skip if V%X != %.2X\n",q2,(q3<<4)+q4);
             sne(state->reg+q2,(q3<<4)+q4,&state->pc);
             break;
         case 7:
-            //fprintf(log,"skip if V%X = V%X\n",q2,q3);
             sey(state->reg+q2,state->reg+q3,&state->pc);
             break;
         case 8:
-            //fprintf(log,"set V%X to %.2X\n",q2,(q3<<4)+q4);
             seti(state->reg+q2,(q3<<4)+q4);
             break;
         case 9:
-            //fprintf(log,"add %.2X to V%X\n",(q3<<4)+q4,q2); 
             addi(state->reg+q2,(q3<<4)+q4);
             break;
         case 10:
-            //fprintf(log,"set V%X to V%X\n",q2,q3);
             set(state->reg+q2,state->reg+q3);
             break;  
         case 11:
-            //8XY1: bitwise OR
-            //fprintf(log,"V%X OR V%X\n",q2,q3);
             or(state->reg+q2,state->reg+q3);
             break;
         case 12:
-            //8XY2: bitwise AND
-            //fprintf(log,"V%X AND V%X\n",q2,q3);
             and(state->reg+q2,state->reg+q3);
             break;
         case 13:
-            //fprintf(log,"V%X XOR V%X\n",q2,q3);
             xor(state->reg+q2,state->reg+q3);
             break;
         case 14:
-            //fprintf(log,"V%X + V%X\n",q2,q3);
             add(state->reg+q2,state->reg+q3,state->vf);
             break;
         case 15:
-            //fprintf(log,"V%X - V%X\n",q2,q3);
             subyx(state->reg+q2,state->reg+q3,state->vf);
             break;
         case 16:
-            //fprintf(log,"V%X >> 1\n",q2);
             shr(state->reg+q2,state->vf);
             break;
         case 17:
-            //8XY7: subtract x from y
-            //fprintf(log,"V%X - V%X\n",q3,q2);
             subxy(state->reg+q2,state->reg+q3,state->vf);
             break;
         case 18:
-            //fprintf(log,"V%X << 1\n",q2);
             shl(state->reg+q2,state->vf);
             break;
         case 19:
-            //fprintf(log,"skip if V%X != V%X\n",q2,q3);
             sney(state->reg+q2,state->reg+q3,&state->pc);
             break;
         case 20:
             longOp = (word)((q2<<8)+(q3<<4)+q4);
-            //fprintf(log,"set I to %.3X\n",longOp);
             iset(&state->I,longOp);
             break;  
         case 21:
             longOp = (word)((q2<<8)+(q3<<4)+q4);
-            //fprintf(log,"jump to %.3X + V0\n",longOp);
             jmp0(state->reg,longOp,&state->pc);
             break;
         case 22:
-            //fprintf(log,"set V%X to (rand & %.2X)\n",q2,(q3<<4)+q4);
             setrand(state->reg+q2,(q3<<4)+q4);
             break;
         case 23:
-            //fprintf(log,"draw sprite at V%X,V%X,H%X\n",q2,q3,q4);
             drawSprite(*(state->reg+q2),*(state->reg+q3),q4,state->mem+state->I,state->vf);
             break;
         case 24:
-            //fprintf(log,"skip if key in V%X is pressed*\n",q2);
             skip(state->reg+q2,&state->pc);
             break;
         case 25:
-            //fprintf(log,"skip if key in V%X isn't pressed*\n",q2);
             skipnp(state->reg+q2,&state->pc);
             break;
         case 26:
-            //fprintf(log,"set V%X to the delay timer\n",q2);
             readdt(state->reg+q2,&state->dt);
             break;
         case 27:
-            //fprintf(log,"store next keypress in V%X*\n",q2);
             getkey(state->reg+q2);
             break;
         case 28:
-            //fprintf(log,"set delay timer to V%X",q2);
             setdt(state->reg+q2,&state->dt);
             break;
         case 29:

@@ -1,6 +1,6 @@
-An emulator for the CHIP-8 architecture.
+An intepreter for the CHIP-8 programming language.
 
-Technically this isn't a true emulator since CHIP-8 was actually an interpreted programming language and wasn't implemented directly in hardware.  Its purpose was to make programming games easier by providing a common instruction set that would work across multiple platforms.
+CHIP-8 was an interpreted programming language that was used on some 8 bit computers in thr 70s.  Its purpose was to make programming games easier by providing a common instruction set that would work across multiple platforms.
 
 See the links below for more info and the specification that was followed
 
@@ -9,3 +9,5 @@ https://en.wikipedia.org/wiki/CHIP-8
 http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
 
 This doesn't use any special libraries apart from ncurses so it *should* compile on unix based systems without too much trouble.  When running it make sure the terminal window is at least 64x32 characters wide so things will display correctly.
+
+I'm doing this as a an introduction to writing emulators and it is still very much a work in progress.

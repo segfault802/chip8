@@ -31,87 +31,112 @@ void printInstr(Instruction* instr)
     q2 = instr->unpack.q2;
     q3 = instr->unpack.q3;
     q4 = instr->unpack.q4;
-    printf("--%.4X--\n",instr->pack);
     switch(opcode) {
         case 0:
-            printf("cls"); 
+            printf("%-5s","cls");
             break;
         case 1:
-            printf("ret");
+            printf("%-5s","ret");
             break;
         case 2:
-            printf("sys $%x%x%x",q2,q3,q4);
+            printf("%-5s $%x%x%x","sys",q2,q3,q4);
             break;
         case 3:
-            printf("jp $%x%x%x",q2,q3,q4);
+            printf("%-5s $%x%x%x","jp",q2,q3,q4);
             break;
         case 4:
-            printf("call $%x%x%x",q2,q3,q4);
+            printf("%-5s $%x%x%x","call",q2,q3,q4);
             break;
         case 5:
-            printf("se v%x, %x%x",q2,q3,q4);
+            printf("%-5s v%x, %x%x","se",q2,q3,q4);
             break;
         case 6:
-            printf("sne v%x, %x%x",q2,q3,q4);
+            printf("%-5s v%x, %x%x","sne",q2,q3,q4);
+            break;
         case 7:
-            printf("se v%x, v%x",q2,q3);
+            printf("%-5s v%x, v%x","se",q2,q3);
             break;
         case 8:
-            printf("ld v%x, %x%x",q2,q3,q4);
+            printf("%-5s v%x, %x%x","ld",q2,q3,q4);
             break;
         case 9:
-            printf("add v%x, %x%x",q2,q3,q4);
+            printf("%-5s v%x, %x%x","add",q2,q3,q4);
             break;
         case 10:
-            printf("ld v%x, v%x",q2,q3);
+            printf("%-5s v%x, v%x","ld",q2,q3);
             break;
         case 11:
-            printf("or v%x, v%x",q2,q3);
+            printf("%-5s v%x, v%x","or",q2,q3);
             break;
         case 12:
-            printf("and v%x, v%x",q2,q3);
+            printf("%-5s v%x, v%x","and",q2,q3);
             break;
         case 13:
-            printf("xor v%x, v%x",q2,q3);
+            printf("%-5s v%x, v%x","xor",q2,q3);
             break;
         case 14:
-            printf("add v%x, v%x",q2,q3);
+            printf("%-5s v%x, v%x","add",q2,q3);
             break;
         case 15:
-            printf("sub v%x, v%x",q2,q3);
+            printf("%-5s v%x, v%x","sub",q2,q3);
             break;
         case 16:
-            printf("shr v%x, v%x",q2,q3);
+            printf("%-5s v%x, v%x","shr",q2,q3);
             break;
         case 17:
-            printf("subn v%x, v%x",q2,q3);
+            printf("%-5s v%x, v%x","subn",q2,q3);
             break;
         case 18:
-            printf("shl v%x, v%x",q2,q3);
+            printf("%-5s v%x, v%x","shl",q2,q3);
             break;
         case 19:
-            printf("sne v%x, v%x",q2,q3);
+            printf("%-5s v%x, v%x","sne",q2,q3);
             break;
         case 20:
-            printf("ld i, $%x%x%x",q2,q3,q4);
+            printf("%-5s i, $%x%x%x","ld",q2,q3,q4);
             break;
         case 21:
-            printf("jp v0, $%x%x%x",q2,q3,q4);
+            printf("%-5s v0, $%x%x%x","jp",q2,q3,q4);
             break;
         case 22:
-            printf("rnd v%x, %x%x",q2,q3,q4);
+            printf("%-5s v%x, %x%x","rnd",q2,q3,q4);
             break;
         case 23:
-            printf("drw v%x, v%x, %x",q2,q3,q4);
+            printf("%-5s v%x, v%x, %x","drw",q2,q3,q4);
             break;
         case 24:
-            printf("skp v%x",q2);
+            printf("%-5s v%x","skp",q2);
             break;
         case 25:
-            printf("sknp v%x",q2);
+            printf("%-5s v%x","sknp",q2);
             break;
-        //case 26:
-        //    break;
+        case 26:
+            printf("%-5s v%x, dt","ld",q2);
+            break;
+        case 27:
+            printf("%-5s v%x, k","ld",q2);
+            break;
+        case 28:
+            printf("%-5s dt, v%x","ld",q2);
+            break;
+        case 29:
+            printf("%-5s st, v%x","ld",q2);
+            break;
+        case 30:
+            printf("%-5s i, v%x","add",q2);
+            break;
+        case 31:
+            printf("%-5s f, v%x","ld",q2);
+            break;
+        case 32:
+            printf("%-5s b, v%x","ld",q2);
+            break;
+        case 33:
+            printf("%-5s [i], v%x","ld",q2);
+            break;
+        case 34:
+            printf("%-5s v%x, [i]","ld",q2);
+            break;
         default:
             printf("%X",instr->pack);
             break;
