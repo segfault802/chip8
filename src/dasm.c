@@ -1,6 +1,14 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "decs.h"
 #include "util.h"
+
+typedef struct {
+    Instruction instr;
+    byte jmp;
+    char str[20];
+} DecodedInstr;
+
 
 void printInstr(Instruction* instr);
 
@@ -8,19 +16,32 @@ int main(int argc, char* argv[])
 {
     FILE* fp;
     size_t size;
+    long fileSize;
+    int i;
     byte a,b;
+    DecodedInstr* program;
+    DecodedInstr dinstr;
     Instruction instr;
     if(argc <= 1) {
         printf("no input file!\n");
         return 1;
     }
     fp = fopen(argv[1],"rb");
+    //get the size of the file and allocate a buffer
+    fseek(fp,0,SEEK_END);
+    fileSize = ftell(fp);
+    fseek(fp,0,SEEK_SET);
+    program = (DecodedInstr*)malloc(sizeof(DecodedInstr)*fileSize);
+    i = 0;
     while(!feof(fp)) {
         size = fread(&a,1,1,fp);
         size = fread(&b,1,1,fp);
         instr.pack = (a << 8) + b;
-        printInstr(&instr);
+        program[i].instr = instr;
+        printInstr(&program[i].instr);
+        i++;
     }
+    return 0;
 }
 
 void printInstr(Instruction* instr)
