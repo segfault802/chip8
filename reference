@@ -1,0 +1,35 @@
+0 - 00E0 - CLS
+1 - 00EE - RET
+2 - 0nnn - SYS addr
+3 - 1nnn - JP addr
+4 - 2nnn - CALL addr
+5 - 3xkk - SE Vx, byte
+6 - 4xkk - SNE Vx, byte
+7 - 5xy0 - SE Vx, Vy
+8 - 6xkk - LD Vx, byte
+9 - 7xkk - ADD Vx, byte
+10 - 8xy0 - LD Vx, Vy
+11 - 8xy1 - OR Vx, Vy
+12 - 8xy2 - AND Vx, Vy
+13 - 8xy3 - XOR Vx, Vy
+14 - 8xy4 - ADD Vx, Vy
+15 - 8xy5 - SUB Vx, Vy
+16 - 8xy6 - SHR Vx {, Vy}
+17 - 8xy7 - SUBN Vx, Vy
+18 - 8xyE - SHL Vx {, Vy}
+19 - 9xy0 - SNE Vx, Vy
+20 - Annn - LD I, addr
+21 - Bnnn - JP V0, addr
+22 - Cxkk - RND Vx, byte
+23 - Dxyn - DRW Vx, Vy, nibble
+24 - Ex9E - SKP Vx
+25 - ExA1 - SKNP Vx
+26 - Fx07 - LD Vx, DT
+27 - Fx0A - LD Vx, K
+28 - Fx15 - LD DT, Vx
+29 - Fx18 - LD ST, Vx
+30 - Fx1E - ADD I, Vx
+31 - Fx29 - LD F, Vx
+32 - Fx33 - LD B, Vx
+33 - Fx55 - LD [I], Vx
+34 - Fx65 - LD Vx, [I]

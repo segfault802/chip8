@@ -5,10 +5,11 @@
 
 typedef struct {
     Instruction instr;
-    byte jmp;       //is this a jump instruction?
-    byte data;      //is this a data byte?
-    byte opcode;    //the numerical opcode as returned by lookupOp
-    char str[20];   //human readable string
+    byte jmp;        //is this a jump instruction?
+    byte data;       //is this a data byte?
+    byte jmpTarget;  //is this the target of a jump?
+    byte opcode;     //the numerical opcode as returned by lookupOp
+    char str[20];    //human readable string
 } DecodedInstr;
 
 
